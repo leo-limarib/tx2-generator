@@ -102,7 +102,7 @@ const createTecnico = (caminhoTx2: string, tecnico: any) => {
  * @param tecnico um objeto contendo as informações do responsável técnico.
  * @return retorna uma string do caminho onde o arquivo foi gerado
  */
-export const generateNfce = (
+export const generateTx2 = (
   caminhoTx2: string,
   dadosNota: DadosNota,
   dadosEmitente: DadosEmitente,
