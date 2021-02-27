@@ -11,8 +11,6 @@ interface dadosItem {
   NCM_I05: string;
   /** Código CEST. */
   CEST_I05c: string;
-  /** Código de benefício fiscal na UF aplicado ao item. */
-  cBenef_I05f: string;
   /** Código fiscal de operações e prestações. */
   CFOP_I08: string;
   /** Unidade comercial. */
@@ -37,10 +35,6 @@ interface dadosItem {
   orig_N11: number;
   /** Tributação do ICMS = 00 */
   CST_N12: string;
-  /** Valor do ICMS desonerado. */
-  vICMSDeson_N28a: number;
-  /** Motivo da desoneração do ICMS. */
-  motDesICMS_N28: number;
 }
 
 export default dadosItem;
