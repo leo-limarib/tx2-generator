@@ -1,1 +1,1 @@
-export const Greeter = (name: string) => `Hello ${name}`;
+export const generate = (data: string) => `TX2: ${data}`;
