@@ -3,29 +3,91 @@ import DadosEmitente from './interfaces/dadosEmitente.interface';
 import DadosItem from './interfaces/dadosItem.interface';
 import Totalizadores from './interfaces/totalizadores.interface';
 import Tecnico from './interfaces/tecnico.interface';
+import Pagamento from './interfaces/pagamento.interface';
 import * as fs from 'fs';
-import * as path from 'path';
 
 const createHeader = (caminhoTx2: string) => {
   return new Promise((resolve, reject) => {
-    fs.appendFile(caminhoTx2, 'formato=tx2\nnumlote=0', function (err) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve('Cabeçalho criado com sucesso!');
-      }
-    });
+    fs.appendFileSync(caminhoTx2, 'formato=tx2\nnumlote=0');
+    resolve('Cabeçalho criado com sucesso!');
   });
 };
 
 const createDadosNota = (caminhoTx2: string, dadosNota: any) => {
   return new Promise((resolve, reject) => {
     //Cabeçalho dos dados da nota.
-    fs.appendFile(caminhoTx2, '\n\n----------------- Dados da Nota --------------------\nINCLUIR', () => {});
+    fs.appendFileSync(caminhoTx2, '\n\n----------------- Dados da Nota --------------------\nINCLUIR');
     const keys = Object.keys(dadosNota);
     keys.forEach((key: string) => {
-      fs.appendFile(caminhoTx2, `\n${key}=${dadosNota[key]}`, () => {});
+      fs.appendFileSync(caminhoTx2, `\n${key}=${dadosNota[key]}`);
     });
+    resolve('Dados da nota criados com sucesso.');
+  });
+};
+
+const createDadosEmitente = (caminhoTx2: string, dadosEmitente: any) => {
+  return new Promise((resolve, reject) => {
+    //Cabeçalho dos dados da nota.
+    fs.appendFileSync(caminhoTx2, '\n\n\n----------------- Dados do Emitente --------------------');
+    const keys = Object.keys(dadosEmitente);
+    keys.forEach((key: string) => {
+      fs.appendFileSync(caminhoTx2, `\n${key}=${dadosEmitente[key]}`);
+    });
+    resolve('Dados do emitente criados com sucesso.');
+  });
+};
+
+const createDadosItens = (caminhoTx2: string, itens: Array<any>) => {
+  return new Promise((resolve, reject) => {
+    //Cabeçalho dos dados da nota.
+    fs.appendFileSync(caminhoTx2, '\n\n\n----------------- Dados do Item --------------------');
+    itens.forEach((item) => {
+      fs.appendFileSync(caminhoTx2, '\nINCLUIRITEM');
+      const keys = Object.keys(item);
+      keys.forEach((key: string) => {
+        fs.appendFileSync(caminhoTx2, `\n${key}=${item[key]}`);
+      });
+      fs.appendFileSync(caminhoTx2, '\nSALVARITEM');
+      resolve('Dados dos itens criados com sucesso.');
+    });
+  });
+};
+
+const createPagamento = (caminhoTx2: string, dadosPagamento: any) => {
+  return new Promise((resolve, reject) => {
+    //Cabeçalho dos dados da nota.
+    fs.appendFileSync(caminhoTx2, '\n\n\n----------------- Pagamento --------------------\nINCLUIRPARTE=YA');
+    const keys = Object.keys(dadosPagamento);
+    keys.forEach((key: string) => {
+      fs.appendFileSync(caminhoTx2, `\n${key}=${dadosPagamento[key]}`);
+    });
+    fs.appendFileSync(caminhoTx2, '\nSALVARPARTE=YA');
+    resolve('Dados do pagamento criados com sucesso.');
+  });
+};
+
+const createTotalizadores = (caminhoTx2: string, totalizadores: any) => {
+  return new Promise((resolve, reject) => {
+    //Cabeçalho dos dados da nota.
+    fs.appendFileSync(caminhoTx2, '\n\n\n----------------- Totalizadores --------------------');
+    const keys = Object.keys(totalizadores);
+    keys.forEach((key: string) => {
+      fs.appendFileSync(caminhoTx2, `\n${key}=${totalizadores[key]}`);
+    });
+    resolve('Dados do pagamento criados com sucesso.');
+  });
+};
+
+const createTecnico = (caminhoTx2: string, tecnico: any) => {
+  return new Promise((resolve, reject) => {
+    //Cabeçalho dos dados da nota.
+    fs.appendFileSync(caminhoTx2, '\n\n\n----------------- Responsável Técnico --------------------');
+    const keys = Object.keys(tecnico);
+    keys.forEach((key: string) => {
+      fs.appendFileSync(caminhoTx2, `\n${key}=${tecnico[key]}`);
+    });
+    fs.appendFileSync(caminhoTx2, '\n\nSALVAR');
+    resolve('Dados do pagamento criados com sucesso.');
   });
 };
 
@@ -33,25 +95,33 @@ const createDadosNota = (caminhoTx2: string, dadosNota: any) => {
  * Gera o arquivo tx2 no caminho especificado.
  * @param caminhoTx2 o caminho onde o tx2 será gerado (um arquivo com o mesmo nome não pode existir)
  * @param dadosNota um objeto contendo os dados iniciais da nota.
- * @param dadosNota.Id_A03 Não precisa ser preenchido.
- * @param dadosNota.versao_A02 Versão.
- * @param dadosNota.cUF_B02 UF do emitente.
- * @param dadosNota.cNF_B03 Código gerado pelo sistema para nosso controle, até 8 digitos.
- * @param dadosNota.natOp_B04
- * @param dadosNota.mod_B06 Sempre 65 nessa função. 65 = NFCE.
- * @param dadosNota.serie_B07 Cada operador do caixa vai ter sua série.
- * @param dadosNota.nNF_B08 Controle da numeração pelo SaaS.
- * @param dadosNota.dhEmi_B09 Data (deve seguir formato usado pelo tx2)
- * @param dadosNota.tpAmb_B24 Ambiente produção ou homologação.
+ * @param dadosEmitente um objeto contento os dados do emitente.
+ * @param itens um array contendo objetos com os dados dos itens.
+ * @param pagamento um objeto contendo os dados de pagamento.
+ * @param totalizadores um objeto contendo os dados dos totalizadores.
+ * @param tecnico um objeto contendo as informações do responsável técnico.
  * @return retorna uma string do caminho onde o arquivo foi gerado
  */
-export const generateNfce = (caminhoTx2: string, dadosNota: DadosNota): Promise<String> => {
+export const generateNfce = (
+  caminhoTx2: string,
+  dadosNota: DadosNota,
+  dadosEmitente: DadosEmitente,
+  itens: Array<DadosItem>,
+  pagamento: Pagamento,
+  totalizadores: Totalizadores,
+  tecnico: Tecnico,
+): Promise<String> => {
   return new Promise(async (resolve, reject) => {
     if (fs.existsSync(caminhoTx2)) {
       reject('Um tx2 já existe no caminho especificado.');
     } else {
       await createHeader(caminhoTx2);
       await createDadosNota(caminhoTx2, dadosNota);
+      await createDadosEmitente(caminhoTx2, dadosEmitente);
+      await createDadosItens(caminhoTx2, itens);
+      await createPagamento(caminhoTx2, pagamento);
+      await createTotalizadores(caminhoTx2, totalizadores);
+      await createTecnico(caminhoTx2, tecnico);
       resolve(caminhoTx2);
     }
   });
