@@ -16,7 +16,7 @@ interface dadosNota {
     /** Controle da numeração pelo SaaS. */
     nNF_B08: number;
     /** Data e hora de emissão do documento fiscal. */
-    dhEmi_B09: Date;
+    dhEmi_B09: string;
     /** Tipo de operação. */
     tpNF_B11: number;
     /** Identificador de local de destino da operação. */
@@ -40,6 +40,6 @@ interface dadosNota {
     /** Processo de emissão da NF-e. */
     procEmi_B26: number;
     /** Versão do processo de emissão da NF-e. */
-    verProc_B27: number;
+    verProc_B27: string;
 }
 export default dadosNota;
