@@ -15,4 +15,4 @@ import Pagamento from './interfaces/pagamento.interface';
  * @param tecnico um objeto contendo as informações do responsável técnico.
  * @return retorna uma string do caminho onde o arquivo foi gerado
  */
-export declare const generateNfce: (caminhoTx2: string, dadosNota: DadosNota, dadosEmitente: DadosEmitente, itens: Array<DadosItem>, pagamento: Pagamento, totalizadores: Totalizadores, tecnico: Tecnico) => Promise<String>;
+export declare const generateTx2: (caminhoTx2: string, dadosNota: DadosNota, dadosEmitente: DadosEmitente, itens: Array<DadosItem>, pagamento: Pagamento, totalizadores: Totalizadores, tecnico: Tecnico) => Promise<String>;
