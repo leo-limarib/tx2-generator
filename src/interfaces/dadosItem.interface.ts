@@ -22,7 +22,7 @@ interface dadosItem {
   /** Valor total bruto dos produtos ou serviços. */
   vProd_I11: number;
   /** GTIN da unidade tributável, antigo código EAN. */
-  cEANTrib_I14a: number;
+  cEANTrib_I12: number;
   /** Unidade tributável. */
   uTrib_I13: string;
   /** Quantidade tributável. */

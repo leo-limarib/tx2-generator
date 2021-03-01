@@ -16,7 +16,7 @@ const createHeader = (caminhoTx2: string) => {
 const createDadosNota = (caminhoTx2: string, dadosNota: any) => {
   return new Promise((resolve, reject) => {
     //Cabeçalho dos dados da nota.
-    fs.appendFileSync(caminhoTx2, '\n\n----------------- Dados da Nota --------------------\nINCLUIR');
+    fs.appendFileSync(caminhoTx2, '\nINCLUIR');
     const keys = Object.keys(dadosNota);
     keys.forEach((key: string) => {
       fs.appendFileSync(caminhoTx2, `\n${key}=${dadosNota[key]}`);
@@ -28,7 +28,6 @@ const createDadosNota = (caminhoTx2: string, dadosNota: any) => {
 const createDadosEmitente = (caminhoTx2: string, dadosEmitente: any) => {
   return new Promise((resolve, reject) => {
     //Cabeçalho dos dados da nota.
-    fs.appendFileSync(caminhoTx2, '\n\n\n----------------- Dados do Emitente --------------------');
     const keys = Object.keys(dadosEmitente);
     keys.forEach((key: string) => {
       fs.appendFileSync(caminhoTx2, `\n${key}=${dadosEmitente[key]}`);
@@ -40,7 +39,6 @@ const createDadosEmitente = (caminhoTx2: string, dadosEmitente: any) => {
 const createDadosItens = (caminhoTx2: string, itens: Array<any>) => {
   return new Promise((resolve, reject) => {
     //Cabeçalho dos dados da nota.
-    fs.appendFileSync(caminhoTx2, '\n\n\n----------------- Dados do Item --------------------');
     itens.forEach((item) => {
       fs.appendFileSync(caminhoTx2, '\nINCLUIRITEM');
       const keys = Object.keys(item);
@@ -56,7 +54,7 @@ const createDadosItens = (caminhoTx2: string, itens: Array<any>) => {
 const createPagamento = (caminhoTx2: string, dadosPagamento: any) => {
   return new Promise((resolve, reject) => {
     //Cabeçalho dos dados da nota.
-    fs.appendFileSync(caminhoTx2, '\n\n\n----------------- Pagamento --------------------\nINCLUIRPARTE=YA');
+    fs.appendFileSync(caminhoTx2, '\nINCLUIRPARTE=YA');
     const keys = Object.keys(dadosPagamento);
     keys.forEach((key: string) => {
       fs.appendFileSync(caminhoTx2, `\n${key}=${dadosPagamento[key]}`);
@@ -81,7 +79,6 @@ const createTotalizadores = (caminhoTx2: string, totalizadores: any) => {
 const createTecnico = (caminhoTx2: string, tecnico: any) => {
   return new Promise((resolve, reject) => {
     //Cabeçalho dos dados da nota.
-    fs.appendFileSync(caminhoTx2, '\n\n\n----------------- Responsável Técnico --------------------');
     const keys = Object.keys(tecnico);
     keys.forEach((key: string) => {
       fs.appendFileSync(caminhoTx2, `\n${key}=${tecnico[key]}`);
