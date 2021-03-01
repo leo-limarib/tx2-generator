@@ -89,6 +89,21 @@ const createTecnico = (caminhoTx2: string, tecnico: any) => {
 };
 
 /**
+ * Generates a random string to complement the cNF_B03 value.
+ */
+export const generatecNF_B03 = (): Promise<String> => {
+  return new Promise((resolve, reject) => {
+    var result = '';
+    var characters = '0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < 8; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    resolve(result);
+  });
+};
+
+/**
  * Gera o arquivo tx2 no caminho especificado.
  * @param caminhoTx2 o caminho onde o tx2 será gerado (um arquivo com o mesmo nome não pode existir)
  * @param dadosNota um objeto contendo os dados iniciais da nota.
