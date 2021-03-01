@@ -5,6 +5,10 @@ import Totalizadores from './interfaces/totalizadores.interface';
 import Tecnico from './interfaces/tecnico.interface';
 import Pagamento from './interfaces/pagamento.interface';
 /**
+ * Generates a random string to complement the cNF_B03 value.
+ */
+export declare const generatecNF_B03: () => Promise<String>;
+/**
  * Gera o arquivo tx2 no caminho especificado.
  * @param caminhoTx2 o caminho onde o tx2 será gerado (um arquivo com o mesmo nome não pode existir)
  * @param dadosNota um objeto contendo os dados iniciais da nota.
