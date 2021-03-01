@@ -67,7 +67,6 @@ const createPagamento = (caminhoTx2: string, dadosPagamento: any) => {
 const createTotalizadores = (caminhoTx2: string, totalizadores: any) => {
   return new Promise((resolve, reject) => {
     //Cabeçalho dos dados da nota.
-    fs.appendFileSync(caminhoTx2, '\n\n\n----------------- Totalizadores --------------------');
     const keys = Object.keys(totalizadores);
     keys.forEach((key: string) => {
       fs.appendFileSync(caminhoTx2, `\n${key}=${totalizadores[key]}`);
