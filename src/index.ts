@@ -138,12 +138,22 @@ export const sendToTecnospeed = (
  * @param authorization a string de autorização para acessar a api da tecnospeed
  * @param key a chave da nota
  * @param url 0 = conteúdo binário de pdf, 1 = url para download do pdf.
+ * @param group nome do grupo
+ * @param cnpj cnpj da empresa emitente.
  */
-export const print = async (authorization: string, key: string, url: 0 | 1): Promise<String> => {
+export const print = async (
+  authorization: string,
+  key: string,
+  url: 0 | 1,
+  group: string,
+  cnpj: string,
+): Promise<String> => {
   return new Promise((resolve, reject) => {
     const form = {
       ChaveNota: key,
-      url: url,
+      CNPJ: cnpj,
+      Grupo: group,
+      Url: url,
     };
     var formData = querystring.stringify(form);
     request(
@@ -151,7 +161,7 @@ export const print = async (authorization: string, key: string, url: 0 | 1): Pro
         headers: {
           Authorization: authorization,
         },
-        url: 'http://localhost:8083/ManagerAPIWeb/nfce/imprime',
+        url: 'https://managersaas.tecnospeed.com.br:8081/ManagerAPIWeb/nfce/imprime',
         method: 'GET',
         body: formData,
       },
