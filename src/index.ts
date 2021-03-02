@@ -53,16 +53,18 @@ const createDadosItens = (caminhoTx2: string, itens: Array<any>) => {
   });
 };
 
-const createPagamento = (caminhoTx2: string, dadosPagamento: any) => {
+const createPagamentos = (caminhoTx2: string, pagamentos: Array<any>) => {
   return new Promise((resolve, reject) => {
-    //Cabeçalho dos dados da nota.
-    fs.appendFileSync(caminhoTx2, '\nINCLUIRPARTE=YA');
-    const keys = Object.keys(dadosPagamento);
-    keys.forEach((key: string) => {
-      fs.appendFileSync(caminhoTx2, `\n${key}=${dadosPagamento[key]}`);
+    pagamentos.forEach((pagamento) => {
+      //Cabeçalho dos dados da nota.
+      fs.appendFileSync(caminhoTx2, '\nINCLUIRPARTE=YA');
+      const keys = Object.keys(pagamento);
+      keys.forEach((key: string) => {
+        fs.appendFileSync(caminhoTx2, `\n${key}=${pagamento[key]}`);
+      });
+      fs.appendFileSync(caminhoTx2, '\nSALVARPARTE=YA');
+      resolve('Dados do pagamento criados com sucesso.');
     });
-    fs.appendFileSync(caminhoTx2, '\nSALVARPARTE=YA');
-    resolve('Dados do pagamento criados com sucesso.');
   });
 };
 
@@ -95,7 +97,12 @@ const createTecnico = (caminhoTx2: string, tecnico: any) => {
  * @param cnpj o cnpj da empresa emitente
  * @param grupo o nome do grupo
  */
-export const sendToTecnospeed = (tx2Path: string, cnpj: string, grupo: string): Promise<String> => {
+export const sendToTecnospeed = (
+  tx2Path: string,
+  cnpj: string,
+  grupo: string,
+  authorization: string,
+): Promise<String> => {
   return new Promise((resolve, reject) => {
     const form = {
       CNPJ: cnpj,
@@ -109,7 +116,7 @@ export const sendToTecnospeed = (tx2Path: string, cnpj: string, grupo: string): 
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Content-Length': contentLength,
-          Authorization: 'Basic YWRtaW46ZGZjb20xNDc=',
+          Authorization: authorization,
         },
         url: 'https://managersaashom.tecnospeed.com.br:7071/ManagerAPIWeb/nfce/envia',
         method: 'POST',
@@ -146,7 +153,7 @@ export const generatecNF_B03 = (): Promise<String> => {
  * @param dadosNota um objeto contendo os dados iniciais da nota.
  * @param dadosEmitente um objeto contento os dados do emitente.
  * @param itens um array contendo objetos com os dados dos itens.
- * @param pagamento um objeto contendo os dados de pagamento.
+ * @param pagamentos um array contendo as informações das formas de pagamento utilizadas.
  * @param totalizadores um objeto contendo os dados dos totalizadores.
  * @param tecnico um objeto contendo as informações do responsável técnico.
  * @return retorna uma string do caminho onde o arquivo foi gerado
@@ -156,7 +163,7 @@ export const generateTx2 = (
   dadosNota: DadosNota,
   dadosEmitente: DadosEmitente,
   itens: Array<DadosItem>,
-  pagamento: Pagamento,
+  pagamentos: Array<any>,
   totalizadores: Totalizadores,
   tecnico: Tecnico,
 ): Promise<String> => {
@@ -168,7 +175,7 @@ export const generateTx2 = (
       await createDadosNota(caminhoTx2, dadosNota);
       await createDadosEmitente(caminhoTx2, dadosEmitente);
       await createDadosItens(caminhoTx2, itens);
-      await createPagamento(caminhoTx2, pagamento);
+      await createPagamentos(caminhoTx2, pagamentos);
       await createTotalizadores(caminhoTx2, totalizadores);
       await createTecnico(caminhoTx2, tecnico);
       resolve(caminhoTx2);
