@@ -96,6 +96,7 @@ const createTecnico = (caminhoTx2: string, tecnico: any) => {
  * @param tx2Path o caminho para o arquivo tx2
  * @param cnpj o cnpj da empresa emitente
  * @param grupo o nome do grupo
+ * @param authorization a string de autorização para acessar a api da tecnospeed.
  */
 export const sendToTecnospeed = (
   tx2Path: string,
@@ -120,6 +121,38 @@ export const sendToTecnospeed = (
         },
         url: 'https://managersaashom.tecnospeed.com.br:7071/ManagerAPIWeb/nfce/envia',
         method: 'POST',
+        body: formData,
+      },
+      (err, resp, body) => {
+        if (err) reject(err);
+        else {
+          resolve(body);
+        }
+      },
+    );
+  });
+};
+
+/**
+ * Gera o conteúdo para impressão da nota fiscal.
+ * @param authorization a string de autorização para acessar a api da tecnospeed
+ * @param key a chave da nota
+ * @param url 0 = conteúdo binário de pdf, 1 = url para download do pdf.
+ */
+export const print = async (authorization: string, key: string, url: 0 | 1): Promise<String> => {
+  return new Promise((resolve, reject) => {
+    const form = {
+      ChaveNota: key,
+      url: url,
+    };
+    var formData = querystring.stringify(form);
+    request(
+      {
+        headers: {
+          Authorization: authorization,
+        },
+        url: 'http://localhost:8083/ManagerAPIWeb/nfce/imprime',
+        method: 'GET',
         body: formData,
       },
       (err, resp, body) => {

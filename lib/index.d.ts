@@ -8,8 +8,16 @@ import Tecnico from './interfaces/tecnico.interface';
  * @param tx2Path o caminho para o arquivo tx2
  * @param cnpj o cnpj da empresa emitente
  * @param grupo o nome do grupo
+ * @param authorization a string de autorização para acessar a api da tecnospeed.
  */
 export declare const sendToTecnospeed: (tx2Path: string, cnpj: string, grupo: string, authorization: string) => Promise<String>;
+/**
+ * Gera o conteúdo para impressão da nota fiscal.
+ * @param authorization a string de autorização para acessar a api da tecnospeed
+ * @param key a chave da nota
+ * @param url 0 = conteúdo binário de pdf, 1 = url para download do pdf.
+ */
+export declare const print: (authorization: string, key: string, url: 0 | 1) => Promise<String>;
 /**
  * Generates a random string to complement the cNF_B03 value.
  */
