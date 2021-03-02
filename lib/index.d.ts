@@ -5,6 +5,13 @@ import Totalizadores from './interfaces/totalizadores.interface';
 import Tecnico from './interfaces/tecnico.interface';
 import Pagamento from './interfaces/pagamento.interface';
 /**
+ * Envia o arquivo tx2 para a api da tecnospeed e retorna a resposta.
+ * @param tx2Path o caminho para o arquivo tx2
+ * @param cnpj o cnpj da empresa emitente
+ * @param grupo o nome do grupo
+ */
+export declare const sendToTecnospeed: (tx2Path: string, cnpj: string, grupo: string) => Promise<String>;
+/**
  * Generates a random string to complement the cNF_B03 value.
  */
 export declare const generatecNF_B03: () => Promise<String>;

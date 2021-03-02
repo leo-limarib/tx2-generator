@@ -4,7 +4,9 @@ import DadosItem from './interfaces/dadosItem.interface';
 import Totalizadores from './interfaces/totalizadores.interface';
 import Tecnico from './interfaces/tecnico.interface';
 import Pagamento from './interfaces/pagamento.interface';
+import * as querystring from 'querystring';
 import * as fs from 'fs';
+import * as request from 'request';
 
 const createHeader = (caminhoTx2: string) => {
   return new Promise((resolve, reject) => {
@@ -84,6 +86,42 @@ const createTecnico = (caminhoTx2: string, tecnico: any) => {
     });
     fs.appendFileSync(caminhoTx2, '\n\nSALVAR');
     resolve('Dados do pagamento criados com sucesso.');
+  });
+};
+
+/**
+ * Envia o arquivo tx2 para a api da tecnospeed e retorna a resposta.
+ * @param tx2Path o caminho para o arquivo tx2
+ * @param cnpj o cnpj da empresa emitente
+ * @param grupo o nome do grupo
+ */
+export const sendToTecnospeed = (tx2Path: string, cnpj: string, grupo: string): Promise<String> => {
+  return new Promise((resolve, reject) => {
+    const form = {
+      CNPJ: cnpj,
+      Grupo: grupo,
+      Arquivo: fs.readFileSync(tx2Path, 'utf-8'),
+    };
+    var formData = querystring.stringify(form);
+    var contentLength = formData.length;
+    let req = request(
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': contentLength,
+          Authorization: 'Basic YWRtaW46ZGZjb20xNDc=',
+        },
+        url: 'https://managersaashom.tecnospeed.com.br:7071/ManagerAPIWeb/nfce/envia',
+        method: 'POST',
+        body: formData,
+      },
+      (err, resp, body) => {
+        if (err) reject(err);
+        else {
+          resolve(body);
+        }
+      },
+    );
   });
 };
 
