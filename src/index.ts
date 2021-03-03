@@ -110,16 +110,16 @@ export const sendToTecnospeed = (
       Grupo: grupo,
       Arquivo: fs.readFileSync(tx2Path, 'utf-8'),
     };
-    var formData = querystring.stringify(form);
-    var contentLength = formData.length;
-    let req = request(
+    let formData = querystring.stringify(form);
+    let contentLength = formData.length;
+    request(
       {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Content-Length': contentLength,
           Authorization: authorization,
         },
-        url: 'https://managersaashom.tecnospeed.com.br:7071/ManagerAPIWeb/nfce/envia',
+        url: 'https://managersaas.tecnospeed.com.br:8081/ManagerAPIWeb/nfce/envia',
         method: 'POST',
         body: formData,
       },
@@ -155,7 +155,6 @@ export const print = async (
       Grupo: group,
       Url: url,
     };
-    var formData = querystring.stringify(form);
     request(
       {
         headers: {
@@ -163,7 +162,7 @@ export const print = async (
         },
         url: 'https://managersaas.tecnospeed.com.br:8081/ManagerAPIWeb/nfce/imprime',
         method: 'GET',
-        body: formData,
+        qs: form,
       },
       (err, resp, body) => {
         if (err) reject(err);
