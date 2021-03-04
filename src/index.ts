@@ -109,12 +109,7 @@ const createTecnico = (caminhoTx2: string, tecnico: any) => {
  * @param grupo o nome do grupo
  * @param authorization a string de autorização para acessar a api da tecnospeed.
  */
-export const sendToTecnospeed = (
-  tx2Path: string,
-  cnpj: string,
-  grupo: string,
-  authorization: string,
-): Promise<String> => {
+export const sendNFCe = (tx2Path: string, cnpj: string, grupo: string, authorization: string): Promise<String> => {
   return new Promise((resolve, reject) => {
     const form = {
       CNPJ: cnpj,
@@ -131,6 +126,43 @@ export const sendToTecnospeed = (
           Authorization: authorization,
         },
         url: 'https://managersaas.tecnospeed.com.br:8081/ManagerAPIWeb/nfce/envia',
+        method: 'POST',
+        body: formData,
+      },
+      (err, resp, body) => {
+        if (err) reject(err);
+        else {
+          resolve(body);
+        }
+      },
+    );
+  });
+};
+
+/**
+ * Envia o arquivo tx2 para a api da tecnospeed e retorna a resposta.
+ * @param tx2Path o caminho para o arquivo tx2
+ * @param cnpj o cnpj da empresa emitente
+ * @param grupo o nome do grupo
+ * @param authorization a string de autorização para acessar a api da tecnospeed.
+ */
+export const sendNFe = (tx2Path: string, cnpj: string, grupo: string, authorization: string): Promise<String> => {
+  return new Promise((resolve, reject) => {
+    const form = {
+      CNPJ: cnpj,
+      Grupo: grupo,
+      Arquivo: fs.readFileSync(tx2Path, 'utf-8'),
+    };
+    let formData = querystring.stringify(form);
+    let contentLength = formData.length;
+    request(
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': contentLength,
+          Authorization: authorization,
+        },
+        url: 'https://managersaas.tecnospeed.com.br:8081/ManagerAPIWeb/nfe/envia',
         method: 'POST',
         body: formData,
       },

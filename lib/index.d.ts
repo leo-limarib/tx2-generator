@@ -11,7 +11,15 @@ import Tecnico from './interfaces/tecnico.interface';
  * @param grupo o nome do grupo
  * @param authorization a string de autorização para acessar a api da tecnospeed.
  */
-export declare const sendToTecnospeed: (tx2Path: string, cnpj: string, grupo: string, authorization: string) => Promise<String>;
+export declare const sendNFCe: (tx2Path: string, cnpj: string, grupo: string, authorization: string) => Promise<String>;
+/**
+ * Envia o arquivo tx2 para a api da tecnospeed e retorna a resposta.
+ * @param tx2Path o caminho para o arquivo tx2
+ * @param cnpj o cnpj da empresa emitente
+ * @param grupo o nome do grupo
+ * @param authorization a string de autorização para acessar a api da tecnospeed.
+ */
+export declare const sendNFe: (tx2Path: string, cnpj: string, grupo: string, authorization: string) => Promise<String>;
 /**
  * Gera o conteúdo para impressão da nota fiscal.
  * @param authorization a string de autorização para acessar a api da tecnospeed

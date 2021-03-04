@@ -10,7 +10,7 @@ interface dadosEmitente {
   /** Número. */
   nro_C07: number;
   /** Complemento */
-  xCpl_C08: string;
+  xCpl_C08: string | '';
   /** Bairro */
   xBairro_C09: string;
   /** Código do município */
@@ -22,17 +22,17 @@ interface dadosEmitente {
   /** Código do CEP */
   CEP_C13: string;
   /** Código do País. */
-  cPais_C14: string;
+  cPais_C14: string | '1058';
   /** Nome do País. */
-  xPais_C15: string;
+  xPais_C15: string | 'BRASIL';
   /** Indicador da IE do destinatário. */
   indIEDest_E16a: number;
   /** Inscrição estadual do destinatário. */
   IE_C17: string;
   /** IE do substituto tributário. */
-  IEST_C18: string;
+  IEST_C18: string | '';
   /** Código do regime tributário. */
-  CRT_C21: number;
+  CRT_C21: number | 1;
 }
 
 export default dadosEmitente;
