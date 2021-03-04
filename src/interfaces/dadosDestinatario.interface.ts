@@ -17,8 +17,6 @@ interface DadosDestinatario {
   xMun_E11: string;
   /** Sigla da UF */
   UF_E12: string;
-  /** Indicador da IE do destinatário. */
-  indIEDest_E16a: string;
 }
 
 export default DadosDestinatario;
