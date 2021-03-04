@@ -1,6 +1,4 @@
 interface DadosDestinatario {
-  /** CNPJ do destinatário. */
-  CNPJ_E02: string;
   /** CPF do destinatário. */
   CPF_E03: string;
   /** Identificação do destinatário no caso de comprador estrangeiro. (string vazia caso n seja) */
