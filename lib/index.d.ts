@@ -1,5 +1,6 @@
 import DadosNota from './interfaces/dadosNota.interface';
 import DadosEmitente from './interfaces/dadosEmitente.interface';
+import DadosDestinatario from './interfaces/dadosDestinatario.interface';
 import DadosItem from './interfaces/dadosItem.interface';
 import Totalizadores from './interfaces/totalizadores.interface';
 import Tecnico from './interfaces/tecnico.interface';
@@ -25,7 +26,7 @@ export declare const print: (authorization: string, key: string, url: 0 | 1, gro
  */
 export declare const generatecNF_B03: () => Promise<String>;
 /**
- * Gera o arquivo tx2 no caminho especificado.
+ * Gera o arquivo tx2 (para NFCe) no caminho especificado.
  * @param caminhoTx2 o caminho onde o tx2 será gerado (um arquivo com o mesmo nome não pode existir)
  * @param dadosNota um objeto contendo os dados iniciais da nota.
  * @param dadosEmitente um objeto contento os dados do emitente.
@@ -35,4 +36,17 @@ export declare const generatecNF_B03: () => Promise<String>;
  * @param tecnico um objeto contendo as informações do responsável técnico.
  * @return retorna uma string do caminho onde o arquivo foi gerado
  */
-export declare const generateTx2: (caminhoTx2: string, dadosNota: DadosNota, dadosEmitente: DadosEmitente, itens: Array<DadosItem>, pagamentos: Array<any>, totalizadores: Totalizadores, tecnico: Tecnico) => Promise<String>;
+export declare const generateNFCeTx2: (caminhoTx2: string, dadosNota: DadosNota, dadosEmitente: DadosEmitente, itens: Array<DadosItem>, pagamentos: Array<any>, totalizadores: Totalizadores, tecnico: Tecnico) => Promise<String>;
+/**
+ * Gera o arquivo tx2 (para NFe) no caminho especificado.
+ * @param caminhoTx2 o caminho onde o tx2 será gerado (um arquivo com o mesmo nome não pode existir)
+ * @param dadosNota um objeto contendo os dados iniciais da nota.
+ * @param dadosEmitente um objeto contento os dados do emitente.
+ * @param dadosDestinatario um objeto contendo os dados do destinatário.
+ * @param itens um array contendo objetos com os dados dos itens.
+ * @param pagamentos um array contendo as informações das formas de pagamento utilizadas.
+ * @param totalizadores um objeto contendo os dados dos totalizadores.
+ * @param tecnico um objeto contendo as informações do responsável técnico.
+ * @return retorna uma string do caminho onde o arquivo foi gerado
+ */
+export declare const generateNFeTx2: (caminhoTx2: string, dadosNota: DadosNota, dadosEmitente: DadosEmitente, dadosDestinatario: DadosDestinatario, itens: Array<DadosItem>, pagamentos: Array<any>, totalizadores: Totalizadores, tecnico: Tecnico) => Promise<unknown>;

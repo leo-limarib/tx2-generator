@@ -1,5 +1,6 @@
 import DadosNota from './interfaces/dadosNota.interface';
 import DadosEmitente from './interfaces/dadosEmitente.interface';
+import DadosDestinatario from './interfaces/dadosDestinatario.interface';
 import DadosItem from './interfaces/dadosItem.interface';
 import Totalizadores from './interfaces/totalizadores.interface';
 import Tecnico from './interfaces/tecnico.interface';
@@ -7,6 +8,7 @@ import Pagamento from './interfaces/pagamento.interface';
 import * as querystring from 'querystring';
 import * as fs from 'fs';
 import * as request from 'request';
+import { rejects } from 'assert';
 
 const createHeader = (caminhoTx2: string) => {
   return new Promise((resolve, reject) => {
@@ -29,10 +31,19 @@ const createDadosNota = (caminhoTx2: string, dadosNota: any) => {
 
 const createDadosEmitente = (caminhoTx2: string, dadosEmitente: any) => {
   return new Promise((resolve, reject) => {
-    //Cabeçalho dos dados da nota.
     const keys = Object.keys(dadosEmitente);
     keys.forEach((key: string) => {
       fs.appendFileSync(caminhoTx2, `\n${key}=${dadosEmitente[key]}`);
+    });
+    resolve('Dados do emitente criados com sucesso.');
+  });
+};
+
+const createDadosDestinatario = (caminhoTx2: string, dadosDestinatario: any) => {
+  return new Promise((resolve, reject) => {
+    const keys = Object.keys(dadosDestinatario);
+    keys.forEach((key: string) => {
+      fs.appendFileSync(caminhoTx2, `\n${key}=${dadosDestinatario[key]}`);
     });
     resolve('Dados do emitente criados com sucesso.');
   });
@@ -190,7 +201,7 @@ export const generatecNF_B03 = (): Promise<String> => {
 };
 
 /**
- * Gera o arquivo tx2 no caminho especificado.
+ * Gera o arquivo tx2 (para NFCe) no caminho especificado.
  * @param caminhoTx2 o caminho onde o tx2 será gerado (um arquivo com o mesmo nome não pode existir)
  * @param dadosNota um objeto contendo os dados iniciais da nota.
  * @param dadosEmitente um objeto contento os dados do emitente.
@@ -200,7 +211,7 @@ export const generatecNF_B03 = (): Promise<String> => {
  * @param tecnico um objeto contendo as informações do responsável técnico.
  * @return retorna uma string do caminho onde o arquivo foi gerado
  */
-export const generateTx2 = (
+export const generateNFCeTx2 = (
   caminhoTx2: string,
   dadosNota: DadosNota,
   dadosEmitente: DadosEmitente,
@@ -211,11 +222,50 @@ export const generateTx2 = (
 ): Promise<String> => {
   return new Promise(async (resolve, reject) => {
     if (fs.existsSync(caminhoTx2)) {
-      reject('Um tx2 já existe no caminho especificado.');
+      reject('Já existe um tx2 no caminho especificado.');
     } else {
       await createHeader(caminhoTx2);
       await createDadosNota(caminhoTx2, dadosNota);
       await createDadosEmitente(caminhoTx2, dadosEmitente);
+      await createDadosItens(caminhoTx2, itens);
+      await createPagamentos(caminhoTx2, pagamentos);
+      await createTotalizadores(caminhoTx2, totalizadores);
+      await createTecnico(caminhoTx2, tecnico);
+      resolve(caminhoTx2);
+    }
+  });
+};
+
+/**
+ * Gera o arquivo tx2 (para NFe) no caminho especificado.
+ * @param caminhoTx2 o caminho onde o tx2 será gerado (um arquivo com o mesmo nome não pode existir)
+ * @param dadosNota um objeto contendo os dados iniciais da nota.
+ * @param dadosEmitente um objeto contento os dados do emitente.
+ * @param dadosDestinatario um objeto contendo os dados do destinatário.
+ * @param itens um array contendo objetos com os dados dos itens.
+ * @param pagamentos um array contendo as informações das formas de pagamento utilizadas.
+ * @param totalizadores um objeto contendo os dados dos totalizadores.
+ * @param tecnico um objeto contendo as informações do responsável técnico.
+ * @return retorna uma string do caminho onde o arquivo foi gerado
+ */
+export const generateNFeTx2 = (
+  caminhoTx2: string,
+  dadosNota: DadosNota,
+  dadosEmitente: DadosEmitente,
+  dadosDestinatario: DadosDestinatario,
+  itens: Array<DadosItem>,
+  pagamentos: Array<any>,
+  totalizadores: Totalizadores,
+  tecnico: Tecnico,
+) => {
+  return new Promise(async (resolve, reject) => {
+    if (fs.existsSync(caminhoTx2)) {
+      reject('Já existe um tx2 no caminho especificado.');
+    } else {
+      await createHeader(caminhoTx2);
+      await createDadosNota(caminhoTx2, dadosNota);
+      await createDadosEmitente(caminhoTx2, dadosEmitente);
+      await createDadosDestinatario(caminhoTx2, dadosDestinatario);
       await createDadosItens(caminhoTx2, itens);
       await createPagamentos(caminhoTx2, pagamentos);
       await createTotalizadores(caminhoTx2, totalizadores);
