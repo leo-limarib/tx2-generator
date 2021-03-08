@@ -41,5 +41,7 @@ interface dadosNota {
   procEmi_B26?: number | 0;
   /** Versão do processo de emissão da NF-e. */
   verProc_B27?: string | 'dfcomonline 1.0';
+  /** Indicador de intermediador */
+  indIntermed_B25c: 0;
 }
 export default dadosNota;
