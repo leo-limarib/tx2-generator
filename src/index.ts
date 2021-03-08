@@ -269,6 +269,52 @@ export const generateNFCeTx2 = (
 };
 
 /**
+ * Cancela uma NFCe.
+ * @param authorization the header authrization string (base 64).
+ * @param group the group name
+ * @param cnpj the company cnpj
+ * @param nfceKey the nfce key
+ * @param justify a string justifying the cancel reason
+ * @returns
+ */
+export const cancelNFCe = (
+  authorization: string,
+  group: string,
+  cnpj: string,
+  nfceKey: string,
+  justify: string,
+): Promise<String> => {
+  return new Promise((resolve, reject) => {
+    try {
+      const form = {
+        ChaveNota: nfceKey,
+        CNPJ: cnpj,
+        Grupo: group,
+        Justificativa: justify,
+      };
+      request(
+        {
+          headers: {
+            Authorization: authorization,
+          },
+          url: 'https://managersaas.tecnospeed.com.br:8081/ManagerAPIWeb/nfce/cancela',
+          method: 'POST',
+          qs: form,
+        },
+        (err, resp, body) => {
+          if (err) reject(err);
+          else {
+            resolve(body);
+          }
+        },
+      );
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+/**
  * Gera o arquivo tx2 (para NFe) no caminho especificado.
  * @param caminhoTx2 o caminho onde o tx2 será gerado (um arquivo com o mesmo nome não pode existir)
  * @param dadosNota um objeto contendo os dados iniciais da nota.

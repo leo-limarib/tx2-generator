@@ -46,6 +46,16 @@ export declare const generatecNF_B03: () => Promise<String>;
  */
 export declare const generateNFCeTx2: (caminhoTx2: string, dadosNota: DadosNota, dadosEmitente: DadosEmitente, itens: Array<DadosItem>, pagamentos: Array<any>, totalizadores: Totalizadores, tecnico: Tecnico) => Promise<String>;
 /**
+ * Cancela uma NFCe.
+ * @param authorization the header authrization string (base 64).
+ * @param group the group name
+ * @param cnpj the company cnpj
+ * @param nfceKey the nfce key
+ * @param justify a string justifying the cancel reason
+ * @returns
+ */
+export declare const cancelNFCe: (authorization: string, group: string, cnpj: string, nfceKey: string, justify: string) => Promise<String>;
+/**
  * Gera o arquivo tx2 (para NFe) no caminho especificado.
  * @param caminhoTx2 o caminho onde o tx2 será gerado (um arquivo com o mesmo nome não pode existir)
  * @param dadosNota um objeto contendo os dados iniciais da nota.
